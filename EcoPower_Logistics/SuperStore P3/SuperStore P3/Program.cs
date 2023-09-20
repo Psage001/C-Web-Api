@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Data;
+using EcoPower_Logistics.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,11 @@ builder.Services.AddDbContext<SuperStoreContext>();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<ICustomerRepository, CustomersRepository>();
+builder.Services.AddTransient<IOrderRepository, OrdersRepository>();
 
 var app = builder.Build();
 
